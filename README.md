@@ -19,6 +19,9 @@ Press 'space' to generate new dungeon, play around with the parameters and see h
 History
 -------
 
+Version 1.2 - 2013/12/29
+- Updated to work with Processing 2
+
 Version 1.1 - 2011/11/01
 - Added option to output dungeon as a text file
 - Improved Cellular Automata algorithm

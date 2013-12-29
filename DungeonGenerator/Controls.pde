@@ -210,21 +210,7 @@ void controlEvent(ControlEvent theEvent)
     switch(theEvent.controller().id()) {
       case 0: { generate(); break; } // Generate current world
       case 1: { generate_random(); break; } // Generate random world
-      case 2: { String savePath = selectOutput();  // Opens file chooser
-                if (savePath == null) break;
-                else {
-                  PrintWriter output;
-                  output = createWriter(savePath + ".txt");
-                  for (int j = 0; j < world.grid_height; j++) {
-                    for (int i = 0; i < world.grid_width; i++) {
-                      output.print(world.grid[i][j] + " ");
-                    }
-                    output.print("\n");
-                  }
-                  output.flush(); // Writes the remaining data to the file
-                  output.close(); // Finishes the file 
-                }
-                break; }
+      case 2: { selectInput("Select a file to write to:", "fileSelected"); break; } // Opens file chooser
       case 3: { g_width = int(theEvent.controller().value()); controlP5.controller("min_room_num").setMax((g_width*g_height)/50); break; } // Adjust grid width
       case 4: { g_height = int(theEvent.controller().value()); controlP5.controller("min_room_num").setMax((g_width*g_height)/50); break; } // Adjust grid height
       case 5: { d_show = (theEvent.controller().value() == 1.0) ? true : false; world.updateParam(g_show, d_show); refresh(); break; } // Show info
@@ -268,4 +254,23 @@ void refresh()
   renderGrid();
   popMatrix();
   renderInfo();
+}
+
+void fileSelected(File selection) {
+  if (selection == null) {
+    println("Window was closed or the user hit cancel.");
+  }
+  else {
+    println("User selected " + selection.getAbsolutePath());
+    PrintWriter output;
+    output = createWriter(selection + ".txt");
+    for (int j = 0; j < world.grid_height; j++) {
+      for (int i = 0; i < world.grid_width; i++) {
+        output.print(world.grid[i][j] + " ");
+      }
+      output.print("\n");
+    }
+    output.flush(); // Writes the remaining data to the file
+    output.close(); // Finishes the file 
+  }
 }
