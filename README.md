@@ -19,6 +19,9 @@ Press 'space' to generate new dungeon, play around with the parameters and see h
 History
 -------
 
+Version 1.2.1 - 2015/11/11
+- Removed Java dependency
+
 Version 1.2 - 2013/12/29
 - Updated to work with Processing 2
 

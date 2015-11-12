@@ -246,16 +246,13 @@ class PCGBuild extends PCG {
 
   //The RNG. the seed is based on seconds from the "java epoch" ( I think..)
   //perhaps it's the same date as the unix epoch
+  //Update:Java Date/Random have been removed in favor of Processing's own random()
   private int getRand(int min, int max) {
-
-    //the seed is based on current date and the old, already used seed
-    Date now = new Date();
-    long seed = now.getTime() + oldseed;
+    long seed = (int)random(1000) + oldseed;
     oldseed = seed;
     
-    Random randomizer = new Random(seed);
     int n = max - min + 1;
-    int i = randomizer.nextInt(n);
+    int i = (int)random(n);
     if (i < 0) i = -i;
 
     //System.out.println("seed: " + seed + "\tnum:  " + (min + i));

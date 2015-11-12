@@ -49,34 +49,40 @@ void renderGridCell(int x, int y)
     case 0: // Empty
       fill(0);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
     case 1: // Floor
       fill(255);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
     case 2: // Wall
       if (world.debug) fill(200);
       else fill(255);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
     case 3: // Door
       if (world.debug) fill(0, 102, 153);
       else fill(255);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
     case 4: // Corridor
       fill(255);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
     case 5: // BSP border
       if (world.debug) fill(64, 102, 104);
       else fill(0);
       if (world.show_grid) stroke(150);
+      else noStroke();
       rect(x*10, y*10, 10, 10);
       break;
   }

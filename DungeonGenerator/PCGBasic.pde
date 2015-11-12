@@ -507,7 +507,9 @@ class BinaryHeap {
         nc = (Node) h.get(child);
       }
       if (n.f <= nc.f) break;
-      Collections.swap(h, pos, child);
+      Node tmp = (Node) h.get(pos);
+      h.set(pos, (Node) h.get(child));
+      h.set(child, tmp);
       pos = child;
     }
   }
@@ -519,7 +521,9 @@ class BinaryHeap {
       Node n = (Node) h.get(pos);
       Node np = (Node) h.get(parent);
       if (n.f >= np.f) break;
-      Collections.swap(h, pos, parent);
+      Node tmp = (Node) h.get(pos);
+      h.set(pos, (Node) h.get(parent));
+      h.set(parent, tmp);
       pos = parent;
     }
   }
