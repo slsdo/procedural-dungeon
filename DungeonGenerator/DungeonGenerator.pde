@@ -1,12 +1,12 @@
 /* Procedural Dungeon Generator
    www.futuredatalab.com/proceduraldungeon/
    
-   Compatible with Processing 2.2.1 and ControlP5 2.0.4 */
+   Compatible with Processing 3.0.1 and ControlP5 2.2.5 */
 
 import controlP5.*;
 
 World world;
-ControlP5 controlP5;
+ControlP5 cp5;
 
 void setup() {
   size(800, 600);

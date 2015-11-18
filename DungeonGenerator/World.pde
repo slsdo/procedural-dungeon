@@ -55,8 +55,29 @@ class World {
   void randomWorld()
   {
     g_layout = int(random(1, 4));
-    g_width = int(random(1, 50));
-    g_height = int(random(1, 50));
+    switch (g_layout) {
+      case 0: cp5.getController("Layouts").getCaptionLabel().set("Basic"); break;
+      case 1: cp5.getController("Layouts").getCaptionLabel().set("Cave"); break;
+      case 2: cp5.getController("Layouts").getCaptionLabel().set("BSP"); break;
+      case 3: cp5.getController("Layouts").getCaptionLabel().set("Build"); break;
+    }       
+    if (g_layout == 0) {
+      switch (room_type) {
+        case 0: cp5.getController("Room").setLabel("Scattered"); break;
+        case 1: cp5.getController("Room").setLabel("Sparse"); break;
+        case 2: cp5.getController("Room").setLabel("Dense"); break;
+        case 3: cp5.getController("Room").setLabel("Complex"); break;
+      }
+      cp5.getController("Room").unlock();
+    }
+    else {
+      cp5.getController("Room").lock();
+      cp5.getController("Room").setLabel("N/A");
+    }
+    g_width = int(random(10, 50));
+    cp5.getController("g_width").setValue(g_width);
+    g_height = int(random(10, 50));
+    cp5.getController("g_height").setValue(g_height);
     generateWorld(g_layout, g_width, g_height);
   }
   

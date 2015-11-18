@@ -19,6 +19,10 @@ Press 'space' to generate new dungeon, play around with the parameters and see h
 History
 -------
 
+Version 1.3 - 2015/11/17
+- Updated code to work with Processing 3 and ControlP5 2.2.5
+- Added boundary condition tests for layouts
+
 Version 1.2.1 - 2015/11/11
 - Removed Java dependency
 
