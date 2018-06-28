@@ -1,0 +1,219 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff url(border.gif) repeat-x;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 15px;
+  color: #000;
+}
+
+h1, h2, h3 {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  color: #31414a;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 260%;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 200%;
+  text-align: center;
+}
+
+a {
+  border-bottom: 1px dotted #ccc;
+  text-decoration: none;
+  color: #069;
+}
+
+a:hover {
+  border-bottom: none;
+  color: #f28200;
+}
+
+a:hover img {
+  border: 3px solid #069;
+}
+
+img {
+  border: 3px solid #ccc;
+  padding: 2px;
+}
+
+blockquote {
+  font-size: 0.9em;
+  color: #666666;
+}
+
+.center {
+  margin: 0 auto;
+  text-align: center;
+}
+
+.dcap {
+  color: #f28200;
+  display: inline;
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.8em;
+  text-transform: uppercase;
+  margin: 0.07em 0.14em 0pt 0pt;
+}
+
+.blue {
+  color: #069;
+  font-size: 1em;
+}
+
+.red {
+  color: #f28200;
+  font-size: 1em;
+}
+
+.feature {
+}
+
+.list {
+  margin-left: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.list li {
+  padding-left: 10px;
+}
+
+/* Header */
+
+#header {
+  width: 748px;
+  height: 150px;
+  margin: 0 auto;
+}
+
+#header h1, #header p {
+  margin: 0;
+  margin: 0;
+  font-weight: normal;
+  color: #000;
+}
+
+#header h1 {
+  float: left;
+  padding: 50px 0 0 12px;
+  line-height: 72px;
+  font-size: 62px;
+}
+
+#header p {
+  float: left;
+  padding: 90px 0 0 20px;
+  text-transform: uppercase;
+  font: bold 11px "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+#header p .big {
+  font-size: 167%;
+}
+
+#header a {
+  border: none;
+  color: #000;
+}
+
+/* Page */
+
+#page {
+  width: 978px;
+  margin: 0 auto;
+}
+
+/* Content */
+
+#content {
+  float: right;
+  width: 848px;
+}
+
+#content p, #content ul, #content ol {
+  line-height: 1.8em;
+}
+
+/* Sidebar */
+
+#sidebar {
+  float: left;
+  width: 80px;
+  padding: 0 20px 0 0;
+  border-right: 1px dotted #dcdcdc;
+}
+
+#sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#sidebar li {
+}
+
+#sidebar li ul {
+}
+
+#sidebar li li {
+  padding: 5px 10px;
+  border-top: 1px dotted #dcdcdc;
+}
+
+#sidebar li li.first {
+  border-top-color: #fff;
+}
+
+#sidebar h2 {
+  height: 40px;
+  padding: 20px 0 0 10px;
+  text-transform: lowercase;
+  font-size: 167%;
+}
+
+#sidebar a {
+  border: none;
+  display: block;
+}
+
+#sidebar a:hover {
+  border-bottom: 1px dotted #666;
+}
+
+/* Footer */
+
+#footer {
+  clear: both;
+  width: 100%;
+  height: 40px;
+  padding: 15px 0 0 0;
+  background: #000;
+}
+
+#footer p {
+  color: #ccc;
+  background: #000;
+  margin: 0;
+  text-align: center;
+  font-size: 85%;
+}
+
+#footer a {
+  border: none;
+  color: #ccc;
+  padding: 0 10px;
+  font-size: 1.2em;
+}
+
+#footer a:hover {
+  color: #fff;
+}

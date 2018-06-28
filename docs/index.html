@@ -1,0 +1,198 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Procedural Dungeon Generator | Future Data Lab</title>
+    <meta name="keywords" content="Procedural Dungeon Generation" />
+    <meta name="description" content="Procedural Dungeon Generation" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="js/processing/processing.min.js"></script>
+    <script src="js/processing/processing.init.js"></script>
+    <script src="js/cave.js"></script>
+</head>
+
+<body>
+<div id="header">
+    <h1>Procedural Dungeon</h1>
+    <p><span class="big">Generator</span></p>
+</div>
+<!-- end header -->
+<div id="page">
+    <div id="sidebar">
+        <ul>
+            <li id="menu" class="bg6">
+                <ul>
+                    <li class="first"><a href="#about" title="About">About</a></li>
+                    <li><a href="#algorithms" title="Algorithms">Algorithms</a></li>
+                    <li><a href="#results" title="Results">Results</a></li>
+                    <li><a href="https://github.com/slsdo/procedural-dungeon" title="Code">Code</a></li>
+                    <li><a href="https://slsdo.github.io/procedural-dungeon/" title="Home">Home</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+    <div id="content">
+        <p><span class="dcap">P</span>rocedural content generation is a great way to generate interesting worlds, and dungeon generation is often the first step in level creations. A variety of algorithms have been researched and developed to produce interesting random levels that make games, especially roguelike games, unique and fun.</p>
+
+        <h1 id="about" class="title">Procedural Cave</h1>
+
+        <p>The project initially began around July of 2010 as a simple excercise to generate random caves and dungeons procedurally. Months later, some of this program's code was used in while working on a game's level generator. As the dungeon generator grew and more algorithms were added, the generator was split off as a stand-alone system capable of creating nice dungeons using a variety of methods.</p>
+
+        <p>Below is the original prototype cave generator, which procedurally "grows" a cave based on user inputs. To create a new cave, press Enter.</p>
+
+        <div class="center"><canvas data-processing-sources="js/cave.js" width="300" height="200"></canvas></div>
+
+        <p><span class="dcap">T</span>he dungeon generation code is very modular, so it should be very easy to add new dungeon algorithms. The program creates a grid in the form of a 2D array and passes it to the dungeon algorithm, which then modifies that array. Too add a new algorithm, just create a new file with your new code and pass the array to it.</p>
+
+        <h1 id="algorithms" class="title">Algorithms</h1>
+
+        <p><span class="dcap">S</span>everal algorithms are implemented; some are very simple while others contain complex data structures and pathfinding algorithms. Read on for an explanation of each algorithm, or go to the end to look at the results, as well as downloads and the source code.</p>
+
+        <br />
+        <h2 class="title"><span class="red">R</span><span class="blue">andom Room Placement</span></h2>
+
+        <div class="center"><img src="img/dungeon_basic.png" alt="dungeon_basic" /></div>
+
+        <p><span class="dcap">O</span>ne of the most simple and probably the most used dungeon algorithm. This method places rooms randomly on the grid, then loops over each room and attempts to connect them. If given the chance, random tunnels can also be dug out to give the dungeon a more natural feel. The steps are as follows:</p>
+
+        <ol>
+            <li>Determine the number of rooms to be created based on the room layout selected, and updates various user-configured variables in <em>updateParam()</em></li>
+            <li>Calls <em>initRooms()</em> to create a room of random width and height at a random location on the grid. A random number of openings (doors) are placed on the room's walls.</li>
+            <li>Check if the room is outside of the grid or blocked by another room or corridor through <em>blockRoom()</em>. If blocked, delete the room and repeat step 2.</li>
+            <li>After all rooms are initialized, call <em>initCorridors()</em> to connect the openings in each room. In <em>basicAStar()</em>, A* pathfinding is used to look for the optimal path from one door to another. Weights are used so that the corridors are more likely to be straight and join each other.</li>
+            <li>If there are any openings left unconnected, randomly tunnel corridors out from the opening by calling <em>tunnelRandom()</em>, if the corridor reaches a room wall, add a door there.
+        </ol>
+
+        <p>Different types of dungeons can be generated based on minimum and maximum room size and the number of rooms. The A* algorithm uses the <a href="http://www.policyalmanac.org/games/heuristics.htm">Manhattan method</a> to calculate its heuristics, and a <a href="http://www.policyalmanac.org/games/binaryHeaps.htm">Binary Heap</a> is used to store the nodes.</p>
+
+        <p>References:<br />
+        - <a href="http://pcg.wikidot.com/pcg-algorithm:dungeon-generation">pcg.wikidot.com/pcg-algorithm:dungeon-generation</a><br />
+        - <a href="http://donjon.bin.sh/dungeon/about/">donjon.bin.sh/dungeon/about/</a><br />
+        - <a href="http://www.policyalmanac.org/games/aStarTutorial.htm">www.policyalmanac.org/games/aStarTutorial.htm</a></p>
+
+        <br />
+        <h2 class="title"><span class="red">C</span><span class="blue">ellular Automata</span></h2>
+
+        <div class="center"><img src="img/dungeon_ca.png" alt="dungeon_ca" /></div>
+
+        <p><span class="dcap">B</span>ased on the cellular automata method by Jim Babcock, this algorithm uses <a href="http://en.wikipedia.org/wiki/Cellular_automaton">cellular automaton</a> to create natural-looking caves. Usually cellular automation uses the 4-5 rule: a tile becomes a wall if it was a wall and 4 or more of its nine neighbors were walls, or if it was not a wall and 5 or more neighbors were. This algorithm is a <a href="http://groups.google.com/group/rec.games.roguelike.development/msg/f8dd053f5c830394">slightly modified version</a> of that logic:</p>
+
+        <blockquote>
+        <p>Tile T will be filled if either<br />
+        - T is already filled *and* at least 4 of its neighbors are filled<br />
+        - T is not yet filled *and* at least 5 of its neighbors are filled</p>
+
+        <p>This is the same thing as sayin<br />
+        Tile T will be filled if the number of tiles within one step of T, including T itself, is at least 5.</p>
+
+        <p>But this is not the function which my sample program uses. The function I use is<br />
+        Tile T will be filled if the number of tiles within one step of T, including T itself, is at least R1Cutoff OR the number of tiles within TWO steps of T, including T itself, is at MOST R2Cutoff.</p>
+
+        <p>So, if R1Cutoff=4 and R2Cutoff=5, that will happen almost all of the time.</p>
+
+        <p>Anyways, the function I eventually chose as the 'best' answer was<br />
+        Fill: 40%<br />
+        Repeat 4 times:<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;R1 cutoff: 5<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;R2 cutoff: 2<br />
+        Repeat 3 times:<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;R1 cutoff: 5<br />
+        &nbsp;&nbsp;&nbsp;&nbsp;R2 cutoff: -1</p>
+
+        <p>So the parameters would be<br />
+        xsize ysize 40  5 2 4  5 -1 3 </p>
+        </blockquote>
+
+        <p>So, it first fills the grid randomly with walls and empty cells, then goes over each grid cell and applies the following rules to the cell:</p>
+
+        <ol>
+            <li>A tile <em>T</em> becomes a wall if 5 or more of the tiles within one step of <em>T</em> are walls.</li>
+            <li>A tile <em>T</em> becomes a wall if 2 or less of the tiles within two step of <em>T</em> are walls.</li>
+        </ol>
+
+        <p>Repeat that three times, and the user gets a somewhat natural-looking cave. To clean up the cave further and reduce the number of disconnected caves, the loop is run for four more iterations, except this time a tile <em>T</em> becomes a wall if 5 or more of the tiles within one step of <em>T</em> are walls, and becomes a wall if none of the tiles within two step of <em>T</em> are walls.</p>
+
+        <p>Do note that although the second iteration lowers the possibility of disjointed caves, it may still happen.</p>
+
+        <p>References:<br />
+        - <a href="http://www.jimrandomh.org/misc/caves.html">www.jimrandomh.org/misc/caves.html</a><br />
+        - <a href="http://pixelenvy.ca/wa/ca_cave.html">pixelenvy.ca/wa/ca_cave.html</a></p>
+
+        <br />
+        <h2 class="title"><span class="red">B</span><span class="blue">SP Tree</span></h2>
+
+        <div class="center"><img src="img/dungeon_bsp.png" alt="dungeon_bsp" /></div>
+
+        <p><span class="dcap">T</span>his is an algorithm that takes advantage of a tree data structure called <a href="http://en.wikipedia.org/wiki/Binary_space_partitioning">BSP tree</a> to make sure there are no overlapping rooms during dungeon generation. The algorithm itself is fairly straightforward, as outlined below (<a href="http://roguebasin.roguelikedevelopment.org/index.php/Basic_BSP_Dungeon_generation">check here</a> for a more visual explanation):</p>
+
+        <ol>
+            <li>Start with a rectangular dungeon.</li>
+            <li>Choose a random direction (horizontal or vertical) and location (<em>x</em> for vertical or <em>y</em> for horizontal).</li>
+            <li>Split the dungeon into two sub-dungeons using the parameters obtained in step 2.</li>
+            <li>Pick a random sub-rectangle and repeat step 2 for <em>n</em> iterations.</li>
+            <li>After <em>n</em> iterations, place random sized rooms in each of the rectangles.</li>
+            <li>Connect each room by looping through all the split rectangles and connect each split sub-regions.</li>
+        </ol>
+
+        <p>References:<br />
+        - <a href="http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation">www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation</a><br />
+        - <a href="http://stackoverflow.com/questions/4997642/simple-example-of-bsp-dungeon-generation">stackoverflow.com/questions/4997642/simple-example-of-bsp-dungeon-generation</a></p>
+
+        <br />
+        <h2 class="title"><span class="red">P</span><span class="blue">rocedurally Build</span></h2>
+
+        <div class="center"><img src="img/dungeon_build.png" alt="dungeon_build" /></div>
+
+        <p><span class="dcap">B</span>ased on the method described by <a href="http://mikera.net/">Mike Anderson</a>, this is another fairly simple algorithm, and one that most resemble how an actual dungeon is built. The algorithm first generates a room in the center of the grid, then connects more rooms and corridors to the room and newly placed elements. In effect, the dungeon "grows" outward from the center room:</p>
+
+        <blockquote>
+        <ol>
+            <li>Fill the whole map with solid earth</li>
+            <li>Dig out a single room in the centre of the map</li>
+            <li>Pick a wall of any room</li>
+            <li>Decide upon a new feature to build</li>
+            <li>See if there is room to add the new feature through the chosen wall</li>
+            <li>If yes, continue. If no, go back to step 3</li>
+            <li>Add the feature through the chosen wall</li>
+            <li>Go back to step 3, until the dungeon is complete</li>
+        </ol>
+        </blockquote>
+
+        <p>The original code tends to create rooms connected to rooms with dead end corridors sticking out, this version is modified to reduce the number of dead ends and increase the likelihood of a room being generated at the end of a corridor.</p>
+
+        <p>This algorithm is implemented to test the extensibility of the dungeon generator, efforts were made to retain as much of the original code as possible.</p>
+
+        <p>References:<br />
+        - <a href="http://www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm">www.roguebasin.com/index.php?title=Dungeon-Building_Algorithm</a><br />
+        - <a href="http://www.roguebasin.com/index.php?title=Java_Example_of_Dungeon-Building_Algorithm">www.roguebasin.com/index.php?title=Java_Example_of_Dungeon-Building_Algorithm</a><br />
+        - <a href="http://openprocessing.org/visuals/?visualID=18822">openprocessing.org/visuals/?visualID=18822</a></p>
+
+        <h1 id="results" class="title">Results</h1>
+
+        <p><span class="dcap">T</span>he program should be fairly straightforward to use. Press 'space' to generate new dungeons, play around with the parameters and see how they affect the dungeon created. Click 'Save' to save the current dungeon to a file.</p>
+
+        <p>Download the generator for your system of choice:</p>
+
+        <div>
+            <p><strong>Windows:</strong> [ <a href="etc/v1.3.0/dungeon_v1.3.0_win32.zip">v1.3.0 (32-bit)</a> ] [ <a href="etc/v1.3.0/dungeon_v1.3.0_win64.zip">v1.3.0 (64-bit)</a> ]<br />
+            <strong>Mac:</strong> [ <a href="etc/v1.3.0/dungeon_v1.3.0_osx.zip">v1.3.0</a> ]<br />
+            <strong>Linux:</strong> [ <a href="etc/v1.3.0/dungeon_v1.3.0_linux32.zip">v1.3.0 (32-bit)</a> ] [ <a href="etc/v1.3.0/dungeon_v1.3.0_linux64.zip">v1.3.0 (64-bit)</a> ] [ <a href="etc/v1.3.0/dungeon_v1.3.0_linux-armv6hf.zip">v1.3.0 (ARMv6 hf)</a> ]</p>
+        </div>
+
+        <br />
+
+        <div class="center"><img src="img/dungeon_result.png" alt="dungeon_result" /></div>
+
+        <p>&nbsp;</p>
+    </div>
+    <!-- end content -->
+    <div style="clear: both;">&nbsp;</div>
+</div>
+<!-- end page -->
+<div id="footer">
+    <p id="links">&copy; 2011 slsdo</p>
+</div>
+<!-- end footer -->
+</body>
+</html>
